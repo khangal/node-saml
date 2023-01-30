@@ -242,7 +242,7 @@ class SAML {
       nameIDPolicy["@SPNameQualifier"] = this.options.spNameQualifier;
     }
 
-    request["saml2p:AuthnRequest"]["samlp:NameIDPolicy"] = nameIDPolicy;
+    request["saml2p:AuthnRequest"]["saml2p:NameIDPolicy"] = nameIDPolicy;
 
     if (!this.options.disableRequestedAuthnContext) {
       const authnContextClassRefs: XMLInput[] = [];

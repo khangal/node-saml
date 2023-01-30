@@ -230,7 +230,7 @@ class SAML {
     }
 
     const nameIDPolicy: XMLInput = {
-      "@xmlns:samlp": "urn:oasis:names:tc:SAML:2.0:protocol",
+      "@xmlns:saml2p": "urn:oasis:names:tc:SAML:2.0:protocol",
       "@AllowCreate": this.options.allowCreate,
     };
 
@@ -253,10 +253,10 @@ class SAML {
         });
       });
 
-      request["saml2p:AuthnRequest"]["samlp:RequestedAuthnContext"] = {
-        "@xmlns:samlp": "urn:oasis:names:tc:SAML:2.0:protocol",
+      request["saml2p:AuthnRequest"]["saml2p:RequestedAuthnContext"] = {
+        "@xmlns:saml2p": "urn:oasis:names:tc:SAML:2.0:protocol",
         "@Comparison": this.options.racComparison,
-        "saml:AuthnContextClassRef": authnContextClassRefs,
+        "saml2:AuthnContextClassRef": authnContextClassRefs,
       };
     }
 

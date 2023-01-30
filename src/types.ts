@@ -38,7 +38,7 @@ export type XMLInput = XMLObject;
 export type XMLOutput = Record<string, any>;
 
 export type AuthorizeRequestXML = {
-  "samlp:AuthnRequest": XMLInput;
+  "saml2p:AuthnRequest": XMLInput;
 };
 
 export type XmlJsObject = {

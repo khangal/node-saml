@@ -194,28 +194,28 @@ class SAML {
       await this.cacheProvider.saveAsync(id, instant);
     }
     const request: AuthorizeRequestXML = {
-      "samlp:AuthnRequest": {
-        "@xmlns:samlp": "urn:oasis:names:tc:SAML:2.0:protocol",
+      "saml2p:AuthnRequest": {
+        "@xmlns:saml2p": "urn:oasis:names:tc:SAML:2.0:protocol",
         "@ID": id,
         "@Version": "2.0",
         "@IssueInstant": instant,
         "@ProtocolBinding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
         "@Destination": this.options.entryPoint,
-        "saml:Issuer": {
-          "@xmlns:saml": "urn:oasis:names:tc:SAML:2.0:assertion",
+        "saml2:Issuer": {
+          "@xmlns:saml2": "urn:oasis:names:tc:SAML:2.0:assertion",
           "#text": this.options.issuer,
         },
       },
     };
 
-    if (isPassive) request["samlp:AuthnRequest"]["@IsPassive"] = true;
+    if (isPassive) request["saml2p:AuthnRequest"]["@IsPassive"] = true;
 
     if (this.options.forceAuthn === true) {
-      request["samlp:AuthnRequest"]["@ForceAuthn"] = true;
+      request["saml2p:AuthnRequest"]["@ForceAuthn"] = true;
     }
 
     if (!this.options.disableRequestAcsUrl) {
-      request["samlp:AuthnRequest"]["@AssertionConsumerServiceURL"] = this.getCallbackUrl(host);
+      request["saml2p:AuthnRequest"]["@AssertionConsumerServiceURL"] = this.getCallbackUrl(host);
     }
 
     const samlAuthnRequestExtensions = this.options.samlAuthnRequestExtensions;
@@ -223,7 +223,7 @@ class SAML {
       if (typeof samlAuthnRequestExtensions != "object") {
         throw new TypeError("samlAuthnRequestExtensions should be Object");
       }
-      request["samlp:AuthnRequest"]["samlp:Extensions"] = {
+      request["saml2p:AuthnRequest"]["samlp:Extensions"] = {
         "@xmlns:samlp": "urn:oasis:names:tc:SAML:2.0:protocol",
         ...samlAuthnRequestExtensions,
       };
@@ -242,7 +242,7 @@ class SAML {
       nameIDPolicy["@SPNameQualifier"] = this.options.spNameQualifier;
     }
 
-    request["samlp:AuthnRequest"]["samlp:NameIDPolicy"] = nameIDPolicy;
+    request["saml2p:AuthnRequest"]["samlp:NameIDPolicy"] = nameIDPolicy;
 
     if (!this.options.disableRequestedAuthnContext) {
       const authnContextClassRefs: XMLInput[] = [];
@@ -253,7 +253,7 @@ class SAML {
         });
       });
 
-      request["samlp:AuthnRequest"]["samlp:RequestedAuthnContext"] = {
+      request["saml2p:AuthnRequest"]["samlp:RequestedAuthnContext"] = {
         "@xmlns:samlp": "urn:oasis:names:tc:SAML:2.0:protocol",
         "@Comparison": this.options.racComparison,
         "saml:AuthnContextClassRef": authnContextClassRefs,
@@ -261,12 +261,12 @@ class SAML {
     }
 
     if (this.options.attributeConsumingServiceIndex != null) {
-      request["samlp:AuthnRequest"]["@AttributeConsumingServiceIndex"] =
+      request["saml2p:AuthnRequest"]["@AttributeConsumingServiceIndex"] =
         this.options.attributeConsumingServiceIndex;
     }
 
     if (this.options.providerName != null) {
-      request["samlp:AuthnRequest"]["@ProviderName"] = this.options.providerName;
+      request["saml2p:AuthnRequest"]["@ProviderName"] = this.options.providerName;
     }
 
     if (this.options.scoping != null) {
@@ -320,7 +320,7 @@ class SAML {
         scoping["samlp:RequesterID"] = this.options.scoping.requesterId;
       }
 
-      request["samlp:AuthnRequest"]["samlp:Scoping"] = scoping;
+      request["saml2p:AuthnRequest"]["samlp:Scoping"] = scoping;
     }
 
     let stringRequest = buildXmlBuilderObject(request, false);

@@ -248,7 +248,7 @@ class SAML {
       const authnContextClassRefs: XMLInput[] = [];
       (this.options.authnContext as string[]).forEach(function (value) {
         authnContextClassRefs.push({
-          "@xmlns:saml": "urn:oasis:names:tc:SAML:2.0:assertion",
+          "@xmlns:saml2": "urn:oasis:names:tc:SAML:2.0:assertion",
           "#text": value,
         });
       });

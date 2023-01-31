@@ -122,6 +122,7 @@ class SAML {
       generateUniqueId: ctorOptions.generateUniqueId ?? generateUniqueId,
       signMetadata: ctorOptions.signMetadata ?? false,
       racComparison: ctorOptions.racComparison ?? "exact",
+      disableNameIdPolicy: ctorOptions.disableNameIdPolicy ?? false
     };
 
     /**
@@ -229,20 +230,22 @@ class SAML {
       };
     }
 
-    const nameIDPolicy: XMLInput = {
-      "@xmlns:saml2p": "urn:oasis:names:tc:SAML:2.0:protocol",
-      "@AllowCreate": this.options.allowCreate,
-    };
+    if (!this.options.disableNameIdPolicy) {
+      const nameIDPolicy: XMLInput = {
+        "@xmlns:saml2p": "urn:oasis:names:tc:SAML:2.0:protocol",
+        "@AllowCreate": this.options.allowCreate,
+      };
 
-    if (this.options.identifierFormat != null) {
-      nameIDPolicy["@Format"] = this.options.identifierFormat;
+      if (this.options.identifierFormat != null) {
+        nameIDPolicy["@Format"] = this.options.identifierFormat;
+      }
+
+      if (this.options.spNameQualifier != null) {
+        nameIDPolicy["@SPNameQualifier"] = this.options.spNameQualifier;
+      }
+
+      request["saml2p:AuthnRequest"]["saml2p:NameIDPolicy"] = nameIDPolicy;
     }
-
-    if (this.options.spNameQualifier != null) {
-      nameIDPolicy["@SPNameQualifier"] = this.options.spNameQualifier;
-    }
-
-    request["saml2p:AuthnRequest"]["saml2p:NameIDPolicy"] = nameIDPolicy;
 
     if (!this.options.disableRequestedAuthnContext) {
       const authnContextClassRefs: XMLInput[] = [];

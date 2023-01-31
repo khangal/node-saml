@@ -179,6 +179,7 @@ export interface SamlOptions extends Partial<SamlSigningOptions>, MandatorySamlO
   disableRequestAcsUrl: boolean;
   disableNameIdPolicy: boolean
   disableProtocolBinding: boolean;
+  protocolBindingMethod: string
   samlAuthnRequestExtensions?: Record<string, unknown>;
   samlLogoutRequestExtensions?: Record<string, unknown>;
   metadataContactPerson?: {

@@ -123,7 +123,8 @@ class SAML {
       signMetadata: ctorOptions.signMetadata ?? false,
       racComparison: ctorOptions.racComparison ?? "exact",
       disableNameIdPolicy: ctorOptions.disableNameIdPolicy ?? false,
-      disableProtocolBinding: ctorOptions.disableProtocolBinding ?? false
+      disableProtocolBinding: ctorOptions.disableProtocolBinding ?? false,
+      protocolBindingMethod: ctorOptions.protocolBindingMethod ?? "HTTP-POST"
     };
 
     /**
@@ -210,7 +211,7 @@ class SAML {
     };
 
     if (!this.options.disableProtocolBinding) {
-      request["saml2p:AuthnRequest"]["@ProtocolBinding"] = "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+      request["saml2p:AuthnRequest"]["@ProtocolBinding"] = `urn:oasis:names:tc:SAML:2.0:bindings:${this.options.protocolBindingMethod}`
     }
 
     if (isPassive) request["saml2p:AuthnRequest"]["@IsPassive"] = true;

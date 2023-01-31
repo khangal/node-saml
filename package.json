@@ -1,6 +1,6 @@
 {
   "name": "node-saml-fork",
-  "version": "4.0.9",
+  "version": "4.0.11",
   "description": "SAML 2.0 implementation for Node.js",
   "keywords": [
     "saml",

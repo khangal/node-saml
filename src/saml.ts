@@ -122,7 +122,8 @@ class SAML {
       generateUniqueId: ctorOptions.generateUniqueId ?? generateUniqueId,
       signMetadata: ctorOptions.signMetadata ?? false,
       racComparison: ctorOptions.racComparison ?? "exact",
-      disableNameIdPolicy: ctorOptions.disableNameIdPolicy ?? false
+      disableNameIdPolicy: ctorOptions.disableNameIdPolicy ?? false,
+      disableProtocolBinding: ctorOptions.disableProtocolBinding ?? false
     };
 
     /**
@@ -200,7 +201,6 @@ class SAML {
         "@ID": id,
         "@Version": "2.0",
         "@IssueInstant": instant,
-        "@ProtocolBinding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
         "@Destination": this.options.entryPoint,
         "saml2:Issuer": {
           "@xmlns:saml2": "urn:oasis:names:tc:SAML:2.0:assertion",
@@ -208,6 +208,10 @@ class SAML {
         },
       },
     };
+
+    if (!this.options.disableProtocolBinding) {
+      request["saml2p:AuthnRequest"]["@ProtocolBinding"] = "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+    }
 
     if (isPassive) request["saml2p:AuthnRequest"]["@IsPassive"] = true;
 

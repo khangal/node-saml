@@ -518,8 +518,14 @@ class SAML {
     );
   }
 
-  async getAuthorizeFormAsync(RelayState: string, host?: string): Promise<string> {
+  async getAuthorizeFormAsync(RelayState: string, host?: string, params: querystring.ParsedUrlQuery = {}): Promise<string> {
     assertRequired(this.options.entryPoint, "entryPoint is required");
+
+    const url = new URL(this.options.entryPoint)
+
+    Object.keys(params).forEach((k) => {
+      url.searchParams.set(k, params[k] as string);
+    });
 
     // The quoteattr() function is used in a context, where the result will not be evaluated by javascript
     // but must be interpreted by an XML or HTML parser, and it must absolutely avoid breaking the syntax
@@ -586,7 +592,7 @@ class SAML {
       "<noscript>",
       "<p><strong>Note:</strong> Since your browser does not support JavaScript, you must press the button below once to proceed.</p>",
       "</noscript>",
-      '<form method="post" action="' + encodeURI(this.options.entryPoint) + '">',
+      '<form method="post" action="' + encodeURI(url.toString()) + '">',
       formInputs,
       '<input type="submit" value="Submit" />',
       "</form>",
